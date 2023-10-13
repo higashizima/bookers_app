@@ -50,11 +50,11 @@ td {
 }
 
 a {
-  color: #000;
+  color: black;
 }
 
 a:visited {
-    color: #666;
+    color: gray;
 }
 
 #error_explanation {
