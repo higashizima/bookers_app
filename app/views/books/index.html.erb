@@ -1,40 +1,57 @@
+<p id="notice">
+  <%= flash[:notice] %>
+</p>
+
 <h1>Books</h1>
-<% @books.each do |book| %>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @books.reverse_each do |book| %>
+    <tr>
+    <td><%= book.title %></td>
+    <td><%= book.body %></td>
+    <td><%= link_to "Show", "/books/#{book.id}" %></td>
+    <td><%= link_to "Edit", edit_book_path(book.id) %></td>
+    <td><%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "Are you sure?" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
 
-  <p>Title</p>
-  <span><%= book.title %></span>
-  <p>Body</p>
-  <span><%= book.body %></span>
-
-  <span>
-    <%= link_to "Show", "/books/#{book.id}" %>
-  </span>
-  <%= link_to "Edit", edit_book_path(book.id) %>
-  <%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "Are you sure?" %>
-
-<% end %>
 
 
 
-
-<h1>New book</h1>
+<h2>New book</h2>
 <% if @book.errors.any? %>
-  <%= @book.errors.count %>件のエラーが発生しました
+<div id="error_explanation">  
+  <div class="error"><strong><%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:</strong></div>
   <ul>
     <% @book.errors.full_messages.each do |message| %>
       <li><%= message %></li>
     <% end %>
   </ul>
+</div>
 <% end %>
+
 
 <%= form_with model: @book, url: books_path, method: :post do |f| %>
-  <p>Title</p>
-  <%= f.text_field :title %>
 
-  <p>Body</p>
-  <%= f.text_area :body %>
+  <div class="field">
+    <label for="book_title">Title</label>
+    <%= f.text_field :title %>
+  </div>
 
-	<div>
+  <div class="field">
+    <label for="book_body">Body</label>
+    <%= f.text_area :body %>
+  </div>
+
   <%= f.submit 'Create Book' %>
 <% end %>
-  </div>
+
