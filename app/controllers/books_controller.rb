@@ -4,16 +4,18 @@ class BooksController < ApplicationController
     @book = Book.new
   end
   
-    def index
+  def index
     @book = Book.new
     @books = Book.all 
   end
   
   def create
-    #データを受け取り新規登録するためのインスタンス作成
-    book = Book.new(book_params)
-    book.save
-    redirect_to 'books/:id'
+     @book = Book.new(book_params)
+    if @book.save
+      redirect_to book_path(@book.id)
+    else
+      render :index
+    end
   end
 
   def show
@@ -21,13 +23,26 @@ class BooksController < ApplicationController
   end
 
   def edit
+    @book = Book.find(params[:id])
+  end
+  
+  def update
+    book = Book.find(params[:id])
+    book.update(book_params)
+    redirect_to book_path(book.id)  
+  end
+  
+  def destroy
+    book = Book.find(params[:id])  
+    book.destroy
+    redirect_to 'books/index'
   end
   
   
   
    private
-  # ストロングパラメータ
   def book_params
     params.require(:book).permit(:title, :body)
   end
+  
 end

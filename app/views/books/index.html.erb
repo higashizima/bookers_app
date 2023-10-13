@@ -5,24 +5,35 @@
   <span><%= book.title %></span>
   <p>Body</p>
   <span><%= book.body %></span>
-  
+
   <span>
     <%= link_to "Show", "/books/#{book.id}" %>
   </span>
-  
+  <%= link_to "Edit", edit_book_path(book.id) %>
+  <%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "Are you sure?" %>
+
 <% end %>
 
 
 
 
 <h1>New book</h1>
-<%= form_with model: @book, url: '/books/index', method: :post do |f| %>
+<% if @book.errors.any? %>
+  <%= @book.errors.count %>件のエラーが発生しました
+  <ul>
+    <% @book.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with model: @book, url: books_path, method: :post do |f| %>
   <p>Title</p>
   <%= f.text_field :title %>
-	
+
   <p>Body</p>
   <%= f.text_area :body %>
-	
+
 	<div>
   <%= f.submit 'Create Book' %>
 <% end %>
